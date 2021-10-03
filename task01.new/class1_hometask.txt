@@ -1,0 +1,44 @@
+-- 5. Используя мета-команды psql, вывести список всех сущностей в базе данных из пункта 2
+/*
+gb=# \l
+                                 Список баз данных
+    Имя    | Владелец | Кодировка | LC_COLLATE |  LC_CTYPE  |     Права доступа     
+-----------+----------+-----------+------------+------------+-----------------------
+ gb        | postgres | UTF8      | en_US.utf8 | en_US.utf8 | =Tc/postgres         +
+           |          |           |            |            | postgres=CTc/postgres+
+           |          |           |            |            | test=CTc/postgres
+ postgres  | postgres | UTF8      | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8      | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |           |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8      | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |           |            |            | postgres=CTc/postgres
+(4 строки)
+
+gb=# \d
+Отношения не найдены.
+gb=# \dt
+Отношения не найдены.
+gb=# \dn
+    Список схем
+  Имя   | Владелец 
+--------+----------
+ public | postgres
+ task01 | sanya
+(2 строки)
+
+gb=# set search_path to "task01";
+SET
+gb=# \dt
+          Список отношений
+ Схема  |  Имя  |   Тип   | Владелец 
+--------+-------+---------+----------
+ task01 | tbl_3 | таблица | sanya
+(1 строка)
+
+gb=# \dT
+  Список типов данных
+ Схема | Имя | Описание 
+-------+-----+----------
+(0 строк)
+
+*/

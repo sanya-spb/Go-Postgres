@@ -1,0 +1,38 @@
+┌──(sanya㉿HIPER)-[task01.new]
+└─$ export PG_HW_CONFIG_FILE=$(pwd)/config.tmpl.yaml
+
+┌──(sanya㉿HIPER)-[task01.new]
+└─$ echo $PG_HW_CONFIG_FILE                   
+/home/sanya/Документы/@sanya/@gb/Go/Postgres/task01.new/config.tmpl.yaml
+
+┌──(sanya㉿HIPER)-[task01.new]
+└─$ ./checker                                       
+2021/10/04 00:12:41 
+******************************************************
+*    Готовлюсь проверять задание
+******************************************************
+
+****************************************************************
+*    Первое задание: началась проверка
+****************************************************************
+2021/10/04 00:12:41 goroutine 1 [running]:
+runtime/debug.Stack(0x699be0, 0xc0000c8340, 0xc000109a68)
+        /usr/local/go/src/runtime/debug/stack.go:24 +0x9f
+github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/tasks.(*Task).Run.func1(0xc000109e30)
+        /home/sshpak/go/src/github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/tasks/tasks.go:44 +0x185
+panic(0x689d60, 0x862bd0)
+        /usr/local/go/src/runtime/panic.go:965 +0x1b9
+github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/hw_tasks/first.validateConfigStep(0x672f00, 0xc0000a8120, 0x86dc20, 0x0, 0xc000109d60, 0x40fb18)
+        /home/sshpak/go/src/github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/hw_tasks/first/first.go:32 +0x53
+github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/tasks.(*taskStep).Run(0xc0000c82c0, 0x672f00, 0xc0000a8120, 0x6598dc, 0xa, 0xc00009adb0, 0x3)
+        /home/sshpak/go/src/github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/tasks/tasks.go:116 +0x3e
+github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/tasks.(*Task).Run(0xc0000cc2c0, 0x672f00, 0xc0000a8120, 0x720678, 0xc0000c8340)
+        /home/sshpak/go/src/github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/tasks/tasks.go:57 +0x143
+main.runTask(0xc0000a8120, 0x6dcd80, 0x6c791d, 0x4, 0xc000109ed0)
+        /home/sshpak/go/src/github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/main.go:43 +0x66
+main.runTaskAndReport(0x6cf63f, 0x1b, 0xc0000a8120, 0x6dcd80, 0x1, 0x200000003, 0xc000000180)
+        /home/sshpak/go/src/github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/main.go:33 +0x165
+main.main()
+        /home/sshpak/go/src/github.com/SergeyShpak/gb-postgres-for-go-devs/hw-1/checker/main.go:24 +0x11d
+
+2021/10/04 00:12:41 [ERR]: произошла критическая ошибка, свяжитесь с преподавателем: an internal error has occurred: a panic occurred: runtime error: invalid memory address or nil pointer dereference
