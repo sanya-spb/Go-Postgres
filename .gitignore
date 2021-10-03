@@ -1,0 +1,4 @@
+/postgres/*
+/*/*.zip
+/checker
+/*/checker
