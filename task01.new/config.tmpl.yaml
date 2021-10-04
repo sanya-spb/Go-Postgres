@@ -8,7 +8,7 @@ rootConnection:
   # Postgres superuser password
   password: "passwd"
   # Postgres superuser DB name
-  dbName: "gb"
+  dbName: "postgres"
 task-1:
   connectionString:
     # IP address of Postgres (when running in docker: 127.0.0.1)
@@ -20,22 +20,22 @@ task-1:
     # First task user password
     password: "passwd"
     # First task DB name
-    dbName: ""
+    dbName: "gb"
   # First task table schema  
   schema: "task01"
   # First task table name
   table: "tbl_3"
-# task-3:
-#   connectionString:
-#     # IP address of Postgres (when running in docker: 127.0.0.1)
-#     host: ""
-#     # Port on which Postgres listens for connections (default: 5432)
-#     port: ""
-#     # Third task user name
-#     user: ""
-#     # Third task user password
-#     password: ""
-#     # First task DB name
-#     dbName: ""
-#   # Third task tables schema
-#   schema: ""
+task-3:
+  connectionString:
+    # IP address of Postgres (when running in docker: 127.0.0.1)
+    host: "127.0.0.1"
+    # Port on which Postgres listens for connections (default: 5432)
+    port: "5432"
+    # Third task user name
+    user: "sanya"
+    # Third task user password
+    password: "passwd"
+    # First task DB name
+    dbName: "sauna"
+  # Third task tables schema
+  schema: "public"
