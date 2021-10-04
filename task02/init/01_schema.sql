@@ -9,12 +9,13 @@ SET ROLE sanya;
 CREATE TABLE services (
 	id serial not null,
 	service text not null,
+	price numeric not null,
 	descr text not null,
-	CONSTRAINT services_pkey PRIMARY KEY (id),
-	CONSTRAINT services_ukey UNIQUE (service)
+	CONSTRAINT services_pkey PRIMARY KEY (id)
 );
 COMMENT ON TABLE public.services IS 'справочник предоставляемых услуг';
 COMMENT ON COLUMN public.services.service IS 'услуга';
+COMMENT ON COLUMN public.services.price IS 'цена (руб/час)';
 COMMENT ON COLUMN public.services.descr IS 'описание услуги';
 
 
@@ -23,11 +24,15 @@ CREATE TABLE personal (
 	id serial not null,
 	fname text not null,
 	lname text not null,
+	phone text not null,
+	email text not null,
 	CONSTRAINT personal_pkey PRIMARY KEY (id)
 );
 COMMENT ON TABLE public.personal IS 'персонал';
 COMMENT ON COLUMN public.personal.fname IS 'имя';
 COMMENT ON COLUMN public.personal.lname IS 'фамилия';
+COMMENT ON COLUMN public.personal.phone IS 'телефон';
+COMMENT ON COLUMN public.personal.email IS 'эл. почта';
 
 
 -- специализация персонала (8-8)
@@ -48,11 +53,17 @@ CREATE TABLE saunas (
 	id serial not null,
 	"name" text not null,
 	address text not null,
+	phone text not null,
+	contact text not null,
+	email text not null,
 	CONSTRAINT saunas_pkey PRIMARY KEY (id)
 );
 COMMENT ON TABLE public.saunas IS 'список объектов';
 COMMENT ON COLUMN public.saunas."name" IS 'название';
 COMMENT ON COLUMN public.saunas.address IS 'адрес';
+COMMENT ON COLUMN public.saunas.phone IS 'телефон';
+COMMENT ON COLUMN public.saunas.contact IS 'конактное лицо/должность';
+COMMENT ON COLUMN public.saunas.email IS 'эл. почта';
 
 
 -- возможные услуги на объекте

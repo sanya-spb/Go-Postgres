@@ -1,2 +1,97 @@
 4. Оценить объём занимаемого места
 
+-- список таблиц;
+sauna=> \dt
+                Список отношений
+ Схема  |       Имя        |   Тип   | Владелец 
+--------+------------------+---------+----------
+ public | order_services   | таблица | sanya
+ public | orders           | таблица | sanya
+ public | personal         | таблица | sanya
+ public | personal_service | таблица | sanya
+ public | sauna_service    | таблица | sanya
+ public | saunas           | таблица | sanya
+ public | services         | таблица | sanya
+(7 строк)
+
+-- количество строк в каждой таблице в соответствии со статистикой, которую собирает Postgres;
+sauna=> select schemaname,relname,n_live_tup from pg_stat_user_tables;
+ schemaname |     relname      | n_live_tup 
+------------+------------------+------------
+ public     | personal         |         50
+ public     | order_services   |       2000
+ public     | personal_service |        100
+ public     | sauna_service    |        100
+ public     | services         |         10
+ public     | saunas           |         94
+ public     | orders           |        859
+(7 строк)
+
+
+-- объём диска, занимаемого каждой таблицей;
+sauna=> \d+
+                                                       Список отношений
+ Схема  |           Имя           |        Тип         | Владелец |  Хранение  |   Размер   |             Описание             
+--------+-------------------------+--------------------+----------+------------+------------+----------------------------------
+ public | order_services          | таблица            | sanya    | постоянное | 152 kB     | услуги по заказу
+ public | order_services_id_seq   | последовательность | sanya    | постоянное | 8192 bytes | 
+ public | orders                  | таблица            | sanya    | постоянное | 152 kB     | список заказов
+ public | orders_id_seq           | последовательность | sanya    | постоянное | 8192 bytes | 
+ public | personal                | таблица            | sanya    | постоянное | 16 kB      | персонал
+ public | personal_id_seq         | последовательность | sanya    | постоянное | 8192 bytes | 
+ public | personal_service        | таблица            | sanya    | постоянное | 16 kB      | специализация персонала (8-8)
+ public | personal_service_id_seq | последовательность | sanya    | постоянное | 8192 bytes | 
+ public | sauna_service           | таблица            | sanya    | постоянное | 16 kB      | возможные услуги на объекте
+ public | sauna_service_id_seq    | последовательность | sanya    | постоянное | 8192 bytes | 
+ public | saunas                  | таблица            | sanya    | постоянное | 56 kB      | список объектов
+ public | saunas_id_seq           | последовательность | sanya    | постоянное | 8192 bytes | 
+ public | services                | таблица            | sanya    | постоянное | 16 kB      | справочник предоставляемых услуг
+ public | services_id_seq         | последовательность | sanya    | постоянное | 8192 bytes | 
+(14 строк)
+
+sauna=> select pg_size_pretty( pg_database_size('sauna') );
+ pg_size_pretty 
+----------------
+ 10 MB
+(1 строка)
+
+sauna=> select pg_database.datname as db, pg_database_size(pg_database.datname)/1024/1024 as size
+FROM pg_database;
+    db     | size 
+-----------+------
+ postgres  |    7
+ template1 |    7
+ template0 |    7
+ sauna     |   10
+(4 строки)
+
+
+-- общий объём диска, занимаемого экземпляром Postgres
+$ sudo du -h postgres/data | sort -h
+4,0K    postgres/data/pg_commit_ts
+4,0K    postgres/data/pg_dynshmem
+4,0K    postgres/data/pg_logical/mappings
+4,0K    postgres/data/pg_logical/snapshots
+4,0K    postgres/data/pg_notify
+4,0K    postgres/data/pg_replslot
+4,0K    postgres/data/pg_serial
+4,0K    postgres/data/pg_snapshots
+4,0K    postgres/data/pg_stat
+4,0K    postgres/data/pg_tblspc
+4,0K    postgres/data/pg_twophase
+4,0K    postgres/data/pg_wal/archive_status
+12K     postgres/data/pg_multixact/members
+12K     postgres/data/pg_multixact/offsets
+12K     postgres/data/pg_subtrans
+12K     postgres/data/pg_xact
+16K     postgres/data/pg_logical
+28K     postgres/data/pg_multixact
+40K     postgres/data/pg_stat_tmp
+568K    postgres/data/global
+7,6M    postgres/data/base/1
+7,6M    postgres/data/base/13394
+7,8M    postgres/data/base/13395
+11M     postgres/data/base/16384
+17M     postgres/data/pg_wal
+34M     postgres/data/base
+51M     postgres/data
