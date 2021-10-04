@@ -12,7 +12,7 @@ SELECT faker.faker('ru_RU');
 INSERT INTO services (service, price, descr)
 SELECT
     faker.job(),
-    round(random()::numeric * 1000 + 1, 2),
+    round(random()::numeric * 800 + 1, 2),
     faker.text()
 FROM generate_series(1,10)
 ON CONFLICT ON constraint services_ukey DO NOTHING;
@@ -43,7 +43,7 @@ INSERT INTO personal_service (personal_id, service_id, price)
 SELECT
     (select id from personal where rnd=rnd order by random() limit 1),
     (select id from services where rnd=rnd order by random() limit 1),
-    round(random()::numeric * 1000 + 1, 2)
+    round(random()::numeric * 500 + 1, 2)
 FROM generate_series(1,100) rnd;
 
 -- возможные услуги на объекте
