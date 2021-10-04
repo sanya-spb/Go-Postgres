@@ -18,7 +18,7 @@ FROM generate_series(1,10)
 ON CONFLICT ON constraint services_ukey DO NOTHING;
 
 -- персонал
-INSERT INTO personal (fname, lname, phone, email)
+INSERT INTO personal (fname, lname, email, phone)
 SELECT
   faker.first_name(),
   faker.last_name(),
