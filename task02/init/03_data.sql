@@ -49,11 +49,17 @@ FROM generate_series(1,100) rnd;
 -- возможные услуги на объекте
 INSERT INTO sauna_service (sauna_id, service_id, capacity, price)
 SELECT
-    (select id from saunas where rnd=rnd order by random() limit 1),
-    (select id from services where rnd=rnd order by random() limit 1),
-    round(random() * 20) + 1,
-    round(random()::numeric * 1000 + 1, 2)
-FROM generate_series(1,100) rnd;
+    tt.sauna_id,
+    tt.service_id,
+    tt.capacity,
+    round(((random()::numeric * 17 + 8)::int * round(tt.capacity / 12 + 1))::numeric * 100, 2) as price -- 800-2500 руб/час до 12 чел
+FROM (
+    SELECT
+        (select id from saunas where rnd=rnd order by random() limit 1) as sauna_id,
+        (select id from services where rnd=rnd order by random() limit 1) as service_id,
+        round(random() * 35) + 1 as capacity
+    FROM generate_series(1,100) rnd
+    )tt;
 
 -- список заказов
 INSERT INTO orders (date_start, peoples_count, duration_common, summary)
