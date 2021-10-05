@@ -48,6 +48,7 @@ CREATE TABLE personal_service (
 	CONSTRAINT personal_service_pkey PRIMARY KEY (id),
 	CONSTRAINT personal_service_personal_fkey FOREIGN KEY (personal_id) REFERENCES public.personal(id),
 	CONSTRAINT personal_service_service_fkey FOREIGN KEY (service_id) REFERENCES public.services(id),
+	CONSTRAINT personal_service_ukey UNIQUE (personal_id, service_id),
 	CONSTRAINT personal_service_check CHECK (price>=0)
 );
 COMMENT ON TABLE public.personal_service IS 'специализация персонала (8-8)';

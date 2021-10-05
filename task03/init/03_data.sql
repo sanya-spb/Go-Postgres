@@ -44,7 +44,8 @@ SELECT
     (select id from personal where rnd=rnd order by random() limit 1),
     (select id from services where rnd=rnd order by random() limit 1),
     round(random()::numeric * 500 + 1, 2)
-FROM generate_series(1,100) rnd;
+FROM generate_series(1,100) rnd
+ON CONFLICT ON constraint personal_service_ukey DO NOTHING;
 
 -- возможные услуги на объекте
 INSERT INTO sauna_service (sauna_id, service_id, capacity, price)

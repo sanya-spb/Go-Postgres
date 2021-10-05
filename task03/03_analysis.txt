@@ -1,0 +1,151 @@
+/*
+    Для каждого индекса из п. 2 показать анализ запроса до/после добавления индекса, оценить занимаемый индексом объём диска.
+*/
+
+sauna=> explain select
+    p.id
+    , p.fname
+    , p.lname
+    , p.phone
+    , p.email
+    , s.id as service_id
+    , s.service
+    , ps.price
+from
+    personal p
+left join personal_service ps on ps.personal_id = p.id
+left join services s on s.id = ps.service_id;
+                                   QUERY PLAN                                    
+---------------------------------------------------------------------------------
+ Hash Right Join  (cost=45.65..48.05 rows=510 width=174)
+   Hash Cond: (ps.personal_id = p.id)
+   ->  Hash Left Join  (cost=24.18..26.34 rows=92 width=50)
+         Hash Cond: (ps.service_id = s.id)
+         ->  Seq Scan on personal_service ps  (cost=0.00..1.92 rows=92 width=22)
+         ->  Hash  (cost=16.30..16.30 rows=630 width=36)
+               ->  Seq Scan on services s  (cost=0.00..16.30 rows=630 width=36)
+   ->  Hash  (cost=15.10..15.10 rows=510 width=132)
+         ->  Seq Scan on personal p  (cost=0.00..15.10 rows=510 width=132)
+(9 строк)
+
+-- CREATE INDEX personal_service_idx ON public.personal_service USING btree (personal_id, service_id);
+
+sauna=> explain select                                                                           
+    p.id
+    , p.fname
+    , p.lname
+    , p.phone
+    , p.email
+    , s.id as service_id
+    , s.service
+    , ps.price
+from
+    personal p
+left join personal_service ps on ps.personal_id = p.id
+left join services s on s.id = ps.service_id;
+                                   QUERY PLAN                                    
+---------------------------------------------------------------------------------
+ Hash Left Join  (cost=3.35..5.88 rows=92 width=97)
+   Hash Cond: (ps.service_id = s.id)
+   ->  Hash Right Join  (cost=2.12..4.31 rows=92 width=83)
+         Hash Cond: (ps.personal_id = p.id)
+         ->  Seq Scan on personal_service ps  (cost=0.00..1.92 rows=92 width=22)
+         ->  Hash  (cost=1.50..1.50 rows=50 width=69)
+               ->  Seq Scan on personal p  (cost=0.00..1.50 rows=50 width=69)
+   ->  Hash  (cost=1.10..1.10 rows=10 width=22)
+         ->  Seq Scan on services s  (cost=0.00..1.10 rows=10 width=22)
+(9 строк)
+
+sauna=> select pg_relation_size('personal_service_idx');
+ pg_relation_size 
+------------------
+            16384
+(1 строка)
+
+sauna=> \di+ personal_service_idx
+                                           Список отношений
+ Схема  |         Имя          |  Тип   | Владелец |     Таблица      |  Хранение  | Размер | Описание 
+--------+----------------------+--------+----------+------------------+------------+--------+----------
+ public | personal_service_idx | индекс | sanya    | personal_service | постоянное | 16 kB  | 
+(1 строка)
+
+
+
+sauna=> explain select    
+    s.id
+    , s."name"
+    , s.address
+    , s.phone
+    , s.contact
+    , s.email
+    , ss.service_id
+    , s2.service
+    , ss.capacity
+    , ss.price
+from
+    saunas s
+right join sauna_service ss on
+    ss.sauna_id = s.id
+left join services s2 on
+    s2.id = ss.service_id;
+                                  QUERY PLAN                                   
+-------------------------------------------------------------------------------
+ Hash Left Join  (cost=6.36..9.01 rows=100 width=224)
+   Hash Cond: (ss.service_id = s2.id)
+   ->  Hash Left Join  (cost=5.14..7.41 rows=100 width=206)
+         Hash Cond: (ss.sauna_id = s.id)
+         ->  Seq Scan on sauna_service ss  (cost=0.00..2.00 rows=100 width=25)
+         ->  Hash  (cost=3.95..3.95 rows=95 width=189)
+               ->  Seq Scan on saunas s  (cost=0.00..3.95 rows=95 width=189)
+   ->  Hash  (cost=1.10..1.10 rows=10 width=22)
+         ->  Seq Scan on services s2  (cost=0.00..1.10 rows=10 width=22)
+(9 строк)
+
+-- CREATE INDEX sauna_service_idx ON public.sauna_service USING btree (sauna_id, service_id);
+
+sauna=> explain analyze select
+    s.id
+    , s."name"
+    , s.address
+    , s.phone
+    , s.contact
+    , s.email
+    , ss.service_id
+    , s2.service
+    , ss.capacity
+    , ss.price
+from
+    saunas s
+right join sauna_service ss on
+    ss.sauna_id = s.id
+left join services s2 on
+    s2.id = ss.service_id;
+                                                        QUERY PLAN                                                         
+---------------------------------------------------------------------------------------------------------------------------
+ Hash Left Join  (cost=6.36..9.01 rows=100 width=224) (actual time=0.336..0.555 rows=100 loops=1)
+   Hash Cond: (ss.service_id = s2.id)
+   ->  Hash Left Join  (cost=5.14..7.41 rows=100 width=206) (actual time=0.252..0.387 rows=100 loops=1)
+         Hash Cond: (ss.sauna_id = s.id)
+         ->  Seq Scan on sauna_service ss  (cost=0.00..2.00 rows=100 width=25) (actual time=0.016..0.040 rows=100 loops=1)
+         ->  Hash  (cost=3.95..3.95 rows=95 width=189) (actual time=0.123..0.124 rows=95 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 29kB
+               ->  Seq Scan on saunas s  (cost=0.00..3.95 rows=95 width=189) (actual time=0.013..0.041 rows=95 loops=1)
+   ->  Hash  (cost=1.10..1.10 rows=10 width=22) (actual time=0.035..0.035 rows=10 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 9kB
+         ->  Seq Scan on services s2  (cost=0.00..1.10 rows=10 width=22) (actual time=0.007..0.012 rows=10 loops=1)
+ Planning Time: 2.652 ms
+ Execution Time: 0.762 ms
+(13 строк)
+
+sauna=> select pg_relation_size('sauna_service_idx');                                     
+ pg_relation_size 
+------------------
+            16384
+(1 строка)
+
+sauna=> \di+ sauna_service_idx 
+                                        Список отношений
+ Схема  |        Имя        |  Тип   | Владелец |    Таблица    |  Хранение  | Размер | Описание 
+--------+-------------------+--------+----------+---------------+------------+--------+----------
+ public | sauna_service_idx | индекс | sanya    | sauna_service | постоянное | 16 kB  | 
+(1 строка)
