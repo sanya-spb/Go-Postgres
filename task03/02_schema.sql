@@ -1,2 +1,6 @@
-CREATE INDEX personal_service_idx ON public.personal_service USING btree (personal_id, service_id);
-CREATE INDEX sauna_service_idx ON public.sauna_service USING btree (sauna_id, service_id);
+/*
+    Предложить, на каких полях можно создать индексы для ускорения запросов из п. 1. Создать требуемые индексы (не более трёх)
+
+    см.: ./init/02_schema.sql
+*/
+
