@@ -1,15 +1,15 @@
 #!/bin/bash -x
 
-TASK='task02'
+TASK='task01.new'
 DATADIR=$(pwd)/postgres/data/
 INITDIR=$(pwd)/${TASK}/init
-
-docker build -t pg-ext ./${TASK}
 
 docker run \
     --rm -it \
     -p 5432:5432 \
-    --name pg-ext \
+    --name postgres \
+    -e POSTGRES_PASSWORD=passwd \
+    -e PGDATA=/var/lib/postgresql/data \
     -v ${DATADIR}:/var/lib/postgresql/data \
     -v ${INITDIR}:/docker-entrypoint-initdb.d \
-    pg-ext
+    postgres:13.4

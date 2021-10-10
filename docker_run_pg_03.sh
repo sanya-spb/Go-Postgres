@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-TASK='task02'
+TASK='task03'
 DATADIR=$(pwd)/postgres/data/
 INITDIR=$(pwd)/${TASK}/init
 

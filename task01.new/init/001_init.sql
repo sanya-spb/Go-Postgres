@@ -15,7 +15,8 @@ docker run \
 
 create database gb;
 create user sanya with encrypted password 'passwd';
-grant all privileges on database gb to sanya;
+ALTER DATABASE gb OWNER TO sanya;
+-- grant all privileges on database gb to sanya;
 
 \c gb
 SET ROLE sanya;
