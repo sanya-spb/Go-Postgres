@@ -1,10 +1,10 @@
 #!/bin/bash -x
 
-TASK='task03'
-DATADIR=$(pwd)/postgres/data/
-INITDIR=$(pwd)/${TASK}/init
+TASK='task05'
+DATADIR=$(pwd)/../postgres/data/
+INITDIR=$(pwd)/../${TASK}/init
 
-docker build -t pg-ext ./${TASK}
+docker build -t pg-ext ../${TASK}
 
 docker run \
     --rm -it \

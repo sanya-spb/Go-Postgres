@@ -24,7 +24,7 @@ func main() {
 
 	app.Welcome()
 
-	persons := persons.NewLinks(store)
+	persons := persons.NewPersons(store)
 	appHandler := handler.NewHandler(persons)
 	appRouter := router.NewRouter(appHandler)
 	appServer := server.NewServer(":8080", appRouter)

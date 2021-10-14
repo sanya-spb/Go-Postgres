@@ -16,7 +16,7 @@ type App struct {
 // init for App
 func NewApp(store persons.PersonsStore) (*App, error) {
 	app := &App{
-		Links: persons.NewLinks(store),
+		Links: persons.NewPersons(store),
 	}
 	return app, nil
 }

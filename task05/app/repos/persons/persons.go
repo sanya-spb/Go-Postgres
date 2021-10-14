@@ -21,7 +21,7 @@ type Persons struct {
 	store PersonsStore
 }
 
-func NewLinks(store PersonsStore) *Persons {
+func NewPersons(store PersonsStore) *Persons {
 	return &Persons{
 		store: store,
 	}
