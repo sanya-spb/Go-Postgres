@@ -2,10 +2,9 @@ package store
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
+	"log"
 	"net"
-	"sync"
 	"time"
 
 	"github.com/jackc/pgconn"
@@ -20,25 +19,25 @@ const (
 	PG_USER     = "sanya"
 	PG_PASSWORD = "passwd"
 	PG_DB_NAME  = "sauna"
+
+	MaxConns = 10
+	MinConns = 2
 )
 
 var _ persons.PersonsStore = &Persons{}
 
 type Persons struct {
-	sync.RWMutex
-	m map[string]persons.TPerson
+	pool *pgxpool.Pool
 }
 
 func NewPersons() *Persons {
-	return &Persons{
-		m: make(map[string]persons.TPerson),
+	pgpool, err := createPGXPoolModeDescribe(MaxConns, MinConns)
+	if err != nil {
+		log.Fatalf("failed to create a PGX pool: %s", err.Error())
 	}
-
-	// pool, err := createPGXPoolModeDescribe(cfg.MaxConns, cfg.MinConns)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to create a PGX pool: %w", err)
-	// }
-
+	return &Persons{
+		pool: pgpool,
+	}
 }
 
 func (p *Persons) GetPerson(ctx context.Context, fName string, lName string) (*persons.TPerson, error) {
@@ -48,14 +47,32 @@ func (p *Persons) GetPerson(ctx context.Context, fName string, lName string) (*p
 	default:
 	}
 
-	p.RLock()
-	defer p.RUnlock()
+	const sql = `
+	-- информация о навыках конкретного сотрудника
+	select
+		id,
+		fname,
+		lname,
+		phone,
+		email
+	from
+		personal
+	where
+		fname = $1
+		and lname = $2;`
+	result := persons.TPerson{}
+	err := p.pool.QueryRow(ctx, sql, fName, lName).Scan(
+		&result.ID,
+		&result.FNname,
+		&result.LName,
+		&result.Phone,
+		&result.Email,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch the personal service: %w", err)
+	}
 
-	// data, ok := link.m[id]
-	// if ok {
-	// 	return &data, nil
-	// }
-	return nil, sql.ErrNoRows
+	return &result, nil
 }
 
 func createPGXPoolModeDescribe(maxConns int32, minConns int32) (*pgxpool.Pool, error) {
