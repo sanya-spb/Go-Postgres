@@ -38,7 +38,7 @@ func NewRouter(hHandler *handler.Handler) *Router {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.NoCache)
 
-	r.Get("/p/{fName}/{lName}", rRouter.getPerson)
+	r.Get("/p/{fName}/{lName}", rRouter.GetPerson)
 
 	rRouter.Handler = r
 	return rRouter
@@ -59,11 +59,11 @@ func (rRouter *Router) Create(w http.ResponseWriter, req *http.Request) {
 	render.Render(w, req, TLink(hLink))
 }
 
-func (rRouter *Router) getPerson(w http.ResponseWriter, req *http.Request) {
+func (rRouter *Router) GetPerson(w http.ResponseWriter, req *http.Request) {
 	fName := chi.URLParam(req, "fName")
 	lName := chi.URLParam(req, "lName")
 
-	hLink, err := rRouter.hHandler.getPerson(req.Context(), fName, lName)
+	hLink, err := rRouter.hHandler.GetPerson(req.Context(), fName, lName)
 	if err != nil {
 		if errors.As(err, &handler.ErrLinkNotFound) {
 			render.Render(w, req, Err404(err))

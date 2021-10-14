@@ -41,7 +41,7 @@ func (link *Links) Create(ctx context.Context, data links.TLink) (string, error)
 	return "", nil
 }
 
-func (link *Links) getPerson(ctx context.Context, fName string, lName string) (*links.TLink, error) {
+func (link *Links) GetPerson(ctx context.Context, fName string, lName string) (*links.TLink, error) {
 	select {
 	case <-ctx.Done():
 		return nil, ctx.Err()

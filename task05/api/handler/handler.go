@@ -32,7 +32,7 @@ func (hHandler *Handler) Create(ctx context.Context, link TLink) (TLink, error) 
 	return TLink(*data), nil
 }
 
-func (hHandler *Handler) getPerson(ctx context.Context, fName string, lName string) (TLink, error) {
+func (hHandler *Handler) GetPerson(ctx context.Context, fName string, lName string) (TLink, error) {
 	if fName == "" {
 		return TLink{}, fmt.Errorf("bad request: fName is empty")
 	}
@@ -41,7 +41,7 @@ func (hHandler *Handler) getPerson(ctx context.Context, fName string, lName stri
 		return TLink{}, fmt.Errorf("bad request: lName is empty")
 	}
 
-	data, err := hHandler.links.getPerson(ctx, fName, lName)
+	data, err := hHandler.links.GetPerson(ctx, fName, lName)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return TLink{}, ErrLinkNotFound

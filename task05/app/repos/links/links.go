@@ -18,7 +18,7 @@ type TLink struct {
 
 type LinksStore interface {
 	Create(ctx context.Context, data TLink) (string, error)
-	getPerson(ctx context.Context, fName string, lName string) (*TLink, error)
+	GetPerson(ctx context.Context, fName string, lName string) (*TLink, error)
 }
 
 type Links struct {
@@ -42,8 +42,8 @@ func (link *Links) Create(ctx context.Context, data TLink) (*TLink, error) {
 }
 
 // Return Link by ID
-func (link *Links) getPerson(ctx context.Context, fName string, lName string) (*TLink, error) {
-	data, err := link.store.getPerson(ctx, fName, lName)
+func (link *Links) GetPerson(ctx context.Context, fName string, lName string) (*TLink, error) {
+	data, err := link.store.GetPerson(ctx, fName, lName)
 	if err != nil {
 		return nil, fmt.Errorf("read link error: %w", err)
 	}
