@@ -20,17 +20,7 @@ func NewHandler(links *links.Links) *Handler {
 	return r
 }
 
-// TODO: пока берем из пакета links, потом решим что тут лишнее
 type TLink links.TLink
-
-func (hHandler *Handler) Create(ctx context.Context, link TLink) (TLink, error) {
-	data, err := hHandler.links.Create(ctx, links.TLink(link))
-	if err != nil {
-		return TLink{}, fmt.Errorf("error when creating: %w", err)
-	}
-
-	return TLink(*data), nil
-}
 
 func (hHandler *Handler) GetPerson(ctx context.Context, fName string, lName string) (TLink, error) {
 	if fName == "" {

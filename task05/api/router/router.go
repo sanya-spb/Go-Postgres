@@ -44,21 +44,6 @@ func NewRouter(hHandler *handler.Handler) *Router {
 	return rRouter
 }
 
-func (rRouter *Router) Create(w http.ResponseWriter, req *http.Request) {
-	link := TLink{}
-	if err := render.Bind(req, &link); err != nil {
-		render.Render(w, req, Err400(err))
-		return
-	}
-	hLink, err := rRouter.hHandler.Create(req.Context(), handler.TLink(link))
-	if err != nil {
-		render.Render(w, req, Err500(err))
-		return
-	}
-	render.Status(req, http.StatusCreated)
-	render.Render(w, req, TLink(hLink))
-}
-
 func (rRouter *Router) GetPerson(w http.ResponseWriter, req *http.Request) {
 	fName := chi.URLParam(req, "fName")
 	lName := chi.URLParam(req, "lName")

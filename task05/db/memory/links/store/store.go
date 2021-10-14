@@ -21,26 +21,6 @@ func NewLinks() *Links {
 	}
 }
 
-func (link *Links) Create(ctx context.Context, data links.TLink) (string, error) {
-	// 	select {
-	// 	case <-ctx.Done():
-	// 		return "", ctx.Err()
-	// 	default:
-	// 	}
-
-	// 	id, err := link.GetNextID(ctx)
-	// 	if err != nil {
-	// 		return "", nil
-	// 	}
-	// 	data.ID = id
-
-	// 	link.Lock()
-	// 	defer link.Unlock()
-
-	// 	link.m[data.ID] = data
-	return "", nil
-}
-
 func (link *Links) GetPerson(ctx context.Context, fName string, lName string) (*links.TLink, error) {
 	select {
 	case <-ctx.Done():
