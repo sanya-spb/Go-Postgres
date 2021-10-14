@@ -16,6 +16,9 @@ go run cmd/task05/main.go
 ```
 3. демонстрация:
 ```
+$ curl http://localhost:8080/p/asd/asd                                                                          
+{"status":"Not Found","error":"error when reading: read link error: failed to fetch the personal service: no rows in result set"}
+
 $ psql -U sanya -d sauna -h localhost
 Пароль пользователя sanya: 
 psql (13.4 (Debian 13.4-3))
