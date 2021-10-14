@@ -16,5 +16,20 @@ go run cmd/task05/main.go
 ```
 3. демонстрация:
 ```
-curl http://localhost:8080/p/asd/asd
+$ psql -U sanya -d sauna -h localhost
+Пароль пользователя sanya: 
+psql (13.4 (Debian 13.4-3))
+Введите "help", чтобы получить справку.
+
+sauna=> select * from personal limit 1;
+ id | fname |   lname   |       phone       |       email       
+----+-------+-----------+-------------------+-------------------
+  1 | Фотий | Стрелкова | 8 (370) 815-49-57 | xkulikova@mail.ru
+(1 строка)
+
+sauna=> 
+\q
+
+$ curl http://localhost:8080/p/Фотий/Стрелкова
+{"id":1,"fname":"Фотий","lname":"Стрелкова","phone":"8 (370) 815-49-57","email":"xkulikova@mail.ru"}
 ```
