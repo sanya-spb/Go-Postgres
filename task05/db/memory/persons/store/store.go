@@ -15,7 +15,7 @@ type Persons struct {
 	m map[string]persons.TPerson
 }
 
-func NewLinks() *Persons {
+func NewPersons() *Persons {
 	return &Persons{
 		m: make(map[string]persons.TPerson),
 	}

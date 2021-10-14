@@ -10,26 +10,26 @@ import (
 
 // application struct
 type App struct {
-	Links *persons.Persons
+	Persons *persons.Persons
 }
 
 // init for App
 func NewApp(store persons.PersonsStore) (*App, error) {
 	app := &App{
-		Links: persons.NewPersons(store),
+		Persons: persons.NewPersons(store),
 	}
 	return app, nil
 }
 
 type HTTPServer interface {
-	Start(links *persons.Persons)
+	Start(p *persons.Persons)
 	Stop()
 }
 
 // start service
 func (app *App) Serve(ctx context.Context, wg *sync.WaitGroup, hs HTTPServer) {
 	defer wg.Done()
-	hs.Start(app.Links)
+	hs.Start(app.Persons)
 	<-ctx.Done()
 	hs.Stop()
 }
