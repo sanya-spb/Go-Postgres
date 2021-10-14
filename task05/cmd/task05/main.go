@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"sync"
 
 	"github.com/sanya-spb/Go-Postgres/api/handler"
@@ -22,19 +21,19 @@ func main() {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-	if _, err := os.Stat(filepath.Dir(app.Config.LogAccess)); os.IsNotExist(err) {
-		log.Fatalln(err.Error())
-	}
-	if _, err := os.Stat(filepath.Dir(app.Config.LogErrors)); os.IsNotExist(err) {
-		log.Fatalln(err.Error())
-	}
+	// if _, err := os.Stat(filepath.Dir(app.Config.LogAccess)); os.IsNotExist(err) {
+	// 	log.Fatalln(err.Error())
+	// }
+	// if _, err := os.Stat(filepath.Dir(app.Config.LogErrors)); os.IsNotExist(err) {
+	// 	log.Fatalln(err.Error())
+	// }
 
 	app.Welcome()
 
 	links := links.NewLinks(store)
 	appHandler := handler.NewHandler(links)
 	appRouter := router.NewRouter(appHandler)
-	appServer := server.NewServer(app.Config.Listen, appRouter)
+	appServer := server.NewServer(":8080", appRouter)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
