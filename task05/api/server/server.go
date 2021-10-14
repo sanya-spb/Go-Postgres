@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/sanya-spb/Go-Postgres/app/repos/links"
+	"github.com/sanya-spb/Go-Postgres/app/repos/persons"
 )
 
 type Server struct {
 	httpServer http.Server
-	links      *links.Links
+	persons    *persons.Persons
 }
 
 func NewServer(addr string, h http.Handler) *Server {
@@ -32,8 +32,8 @@ func (srv *Server) Stop() {
 	cancel()
 }
 
-func (srv *Server) Start(links *links.Links) {
-	srv.links = links
+func (srv *Server) Start(persons *persons.Persons) {
+	srv.persons = persons
 	go srv.httpServer.ListenAndServe()
 }
 

@@ -15,13 +15,13 @@ type Router struct {
 	hHandler *handler.Handler
 }
 
-type TLink handler.TLink
+type TPerson handler.TPerson
 
-func (link *TLink) Bind(r *http.Request) error {
+func (link *TPerson) Bind(r *http.Request) error {
 	return nil
 }
 
-func (TLink) Render(w http.ResponseWriter, r *http.Request) error {
+func (TPerson) Render(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
@@ -48,7 +48,7 @@ func (rRouter *Router) GetPerson(w http.ResponseWriter, req *http.Request) {
 	fName := chi.URLParam(req, "fName")
 	lName := chi.URLParam(req, "lName")
 
-	hLink, err := rRouter.hHandler.GetPerson(req.Context(), fName, lName)
+	hPerson, err := rRouter.hHandler.GetPerson(req.Context(), fName, lName)
 	if err != nil {
 		if errors.As(err, &handler.ErrLinkNotFound) {
 			render.Render(w, req, Err404(err))
@@ -57,5 +57,5 @@ func (rRouter *Router) GetPerson(w http.ResponseWriter, req *http.Request) {
 		render.Render(w, req, Err500(err))
 		return
 	}
-	render.Render(w, req, TLink(hLink))
+	render.Render(w, req, TPerson(hPerson))
 }

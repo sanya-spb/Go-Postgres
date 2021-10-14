@@ -6,38 +6,38 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/sanya-spb/Go-Postgres/app/repos/links"
+	"github.com/sanya-spb/Go-Postgres/app/repos/persons"
 )
 
 type Handler struct {
-	links *links.Links
+	persons *persons.Persons
 }
 
-func NewHandler(links *links.Links) *Handler {
+func NewHandler(persons *persons.Persons) *Handler {
 	r := &Handler{
-		links: links,
+		persons: persons,
 	}
 	return r
 }
 
-type TLink links.TLink
+type TPerson persons.TPerson
 
-func (hHandler *Handler) GetPerson(ctx context.Context, fName string, lName string) (TLink, error) {
+func (hHandler *Handler) GetPerson(ctx context.Context, fName string, lName string) (TPerson, error) {
 	if fName == "" {
-		return TLink{}, fmt.Errorf("bad request: fName is empty")
+		return TPerson{}, fmt.Errorf("bad request: fName is empty")
 	}
 
 	if lName == "" {
-		return TLink{}, fmt.Errorf("bad request: lName is empty")
+		return TPerson{}, fmt.Errorf("bad request: lName is empty")
 	}
 
-	data, err := hHandler.links.GetPerson(ctx, fName, lName)
+	data, err := hHandler.persons.GetPerson(ctx, fName, lName)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return TLink{}, ErrLinkNotFound
+			return TPerson{}, ErrLinkNotFound
 		}
-		return TLink{}, fmt.Errorf("error when reading: %w", err)
+		return TPerson{}, fmt.Errorf("error when reading: %w", err)
 	}
 
-	return TLink(*data), nil
+	return TPerson(*data), nil
 }

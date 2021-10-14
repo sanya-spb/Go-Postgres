@@ -5,28 +5,24 @@ import (
 	"log"
 	"sync"
 
-	"github.com/sanya-spb/Go-Postgres/app/repos/links"
+	"github.com/sanya-spb/Go-Postgres/app/repos/persons"
 )
 
 // application struct
 type App struct {
-	Links *links.Links
-	// Version version.AppVersion
-	// Config  config.Config
+	Links *persons.Persons
 }
 
 // init for App
-func NewApp(store links.LinksStore) (*App, error) {
+func NewApp(store persons.PersonsStore) (*App, error) {
 	app := &App{
-		Links: links.NewLinks(store),
-		// Version: *version.Version,
-		// Config:  *config.NewConfig(),
+		Links: persons.NewLinks(store),
 	}
 	return app, nil
 }
 
 type HTTPServer interface {
-	Start(links *links.Links)
+	Start(links *persons.Persons)
 	Stop()
 }
 
