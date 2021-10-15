@@ -27,7 +27,7 @@ const (
 var _ persons.PersonsStore = &Persons{}
 
 type Persons struct {
-	pool *pgxpool.Pool
+	Pool *pgxpool.Pool
 }
 
 func NewPersons() *Persons {
@@ -36,7 +36,7 @@ func NewPersons() *Persons {
 		log.Fatalf("failed to create a PGX pool: %s", err.Error())
 	}
 	return &Persons{
-		pool: pgpool,
+		Pool: pgpool,
 	}
 }
 
@@ -61,7 +61,7 @@ func (p *Persons) GetPerson(ctx context.Context, fName string, lName string) (*p
 		fname = $1
 		and lname = $2;`
 	result := persons.TPerson{}
-	err := p.pool.QueryRow(ctx, sql, fName, lName).Scan(
+	err := p.Pool.QueryRow(ctx, sql, fName, lName).Scan(
 		&result.ID,
 		&result.FNname,
 		&result.LName,

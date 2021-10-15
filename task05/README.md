@@ -20,7 +20,20 @@ $ migrate -database "postgresql://postgres:passwd@localhost:5432/sauna?sslmode=d
 ```
 3. интеграционные тесты:
 ```
-
+$ go test ./... -tags=integration -v -count=1 
+?       github.com/sanya-spb/Go-Postgres/api/handler    [no test files]
+?       github.com/sanya-spb/Go-Postgres/api/router     [no test files]
+?       github.com/sanya-spb/Go-Postgres/api/server     [no test files]
+?       github.com/sanya-spb/Go-Postgres/app/repos/persons      [no test files]
+?       github.com/sanya-spb/Go-Postgres/app/starter    [no test files]
+?       github.com/sanya-spb/Go-Postgres/cmd/task05     [no test files]
+?       github.com/sanya-spb/Go-Postgres/db/memory/persons/store        [no test files]
+=== RUN   TestPersons_GetPerson
+=== RUN   TestPersons_GetPerson/name
+--- PASS: TestPersons_GetPerson (0.00s)
+    --- PASS: TestPersons_GetPerson/name (0.00s)
+PASS
+ok      github.com/sanya-spb/Go-Postgres/db/postgres/persons/store      0.007s
 ```
 4. запуск приложения:
 ```
