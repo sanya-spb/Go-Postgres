@@ -12,7 +12,7 @@
 ```
 2. миграции:
 ```
-$ migrate -database "postgresql://postgres:passwd@localhost:5432/sauna?sslmode=disable" -path ./app/migrations up                                                 1 ⨯
+$ migrate -database "postgresql://postgres:passwd@localhost:5432/sauna?sslmode=disable" -path ./app/migrations up
 1/u init_schema (333.270606ms)
 2/u skell_schema (1.335919474s)
 3/u views_schema (1.53220948s)
