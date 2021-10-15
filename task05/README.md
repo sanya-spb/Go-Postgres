@@ -37,7 +37,9 @@ ok      github.com/sanya-spb/Go-Postgres/db/postgres/persons/store      0.007s
 ```
 4. запуск приложения:
 ```
-go run cmd/task05/main.go
+$ go run cmd/task05/main.go
+2021/10/15 03:44:16 Let's Go
+2021/10/15 03:44:16 listen at: :8080
 ```
 5. демонстрация (пароль: passwd):
 ```
