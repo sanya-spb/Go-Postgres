@@ -10,29 +10,45 @@
 ```
 ./docker_run_pg_05.sh
 ```
-2. запуск приложения:
+2. миграции:
+```
+$ migrate -database "postgresql://postgres:passwd@localhost:5432/sauna?sslmode=disable" -path ./app/migrations up                                                 1 ⨯
+1/u init_schema (333.270606ms)
+2/u skell_schema (1.335919474s)
+3/u views_schema (1.53220948s)
+4/u data_schema (2.124087911s)
+```
+3. интеграционные тесты:
+```
+
+```
+4. запуск приложения:
 ```
 go run cmd/task05/main.go
 ```
-3. демонстрация:
+5. демонстрация (пароль: passwd):
 ```
-$ curl http://localhost:8080/p/asd/asd                                                                          
+$ curl http://localhost:8080/p/deep/fake                                                                          
 {"status":"Not Found","error":"error when reading: read link error: failed to fetch the personal service: no rows in result set"}
 
-$ psql -U sanya -d sauna -h localhost
+$ psql -U sanya -d sauna -h localhost -c 'select * from personal order by random() limit 1;
 Пароль пользователя sanya: 
-psql (13.4 (Debian 13.4-3))
-Введите "help", чтобы получить справку.
-
-sauna=> select * from personal limit 1;
- id | fname |   lname   |       phone       |       email       
-----+-------+-----------+-------------------+-------------------
-  1 | Фотий | Стрелкова | 8 (370) 815-49-57 | xkulikova@mail.ru
+ id | fname  |  lname   |       phone       |         email         
+----+--------+----------+-------------------+-----------------------
+ 11 | Панфил | Матвеева | +7 (422) 353-5416 | valerija_72@gmail.com
 (1 строка)
 
-sauna=> 
-\q
-
-$ curl http://localhost:8080/p/Фотий/Стрелкова
-{"id":1,"fname":"Фотий","lname":"Стрелкова","phone":"8 (370) 815-49-57","email":"xkulikova@mail.ru"}
+$ curl http://localhost:8080/p/Панфил/Матвеева  
+{"id":11,"fname":"Панфил","lname":"Матвеева","phone":"+7 (422) 353-5416","email":"valerija_72@gmail.com"}
+```
+6. миграции down:
+```
+$ migrate -database "postgresql://postgres:passwd@localhost:5432/sauna?sslmode=disable" -path ./app/migrations down
+Are you sure you want to apply all down migrations? [y/N]
+y
+Applying all down migrations
+4/d data_schema (2.624246539s)
+3/d views_schema (2.759522495s)
+2/d skell_schema (2.920562378s)
+1/d init_schema (3.072944953s)
 ```
